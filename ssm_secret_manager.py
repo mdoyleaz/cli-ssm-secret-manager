@@ -110,18 +110,21 @@ def get_secret(client, secret_name):
 
 ## Takes a list of SSM key names, and returns a list of all values
 def get_secrets(client, secret_names):
-    count = len(secret_names)
+    # Number of items to split list into
+    n = 10
+    split_list = [
+        secret_names[i * n : (i + 1) * n]
+        for i in range((len(secret_names) + n - 1) // n)
+    ]
+
     results = []
-    while count != 0:
+    for i in split_list:
         operation_parameters = {
-            "Names": secret_names[count - 10 : count],
+            "Names": i,
             "WithDecryption": True,
         }
         response = client.get_parameters(**operation_parameters)
         results.extend([parameter for parameter in response["Parameters"]])
-        print(results)
-
-        count = count - 10
 
     return results
 
