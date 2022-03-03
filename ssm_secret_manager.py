@@ -110,7 +110,7 @@ def get_secret(client, secret_name):
 
 ## Takes a list of SSM key names, and returns a list of all values
 def get_secrets(client, secret_names):
-    # Number of items to split list into
+    # Split list into batch of 'n' due to AWS limiting get_parameters() call to a max of 18
     n = 10
     split_list = [
         secret_names[i * n : (i + 1) * n]
