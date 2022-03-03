@@ -110,10 +110,20 @@ def get_secret(client, secret_name):
 
 ## Takes a list of SSM key names, and returns a list of all values
 def get_secrets(client, secret_names):
-    operation_parameters = {"Names": secret_names, "WithDecryption": True}
-    response = client.get_parameters(**operation_parameters)
+    count = len(secret_names)
+    results = []
+    while count != 0:
+        operation_parameters = {
+            "Names": secret_names[count - 10 : count],
+            "WithDecryption": True,
+        }
+        response = client.get_parameters(**operation_parameters)
+        results.extend([parameter for parameter in response["Parameters"]])
+        print(results)
 
-    return response
+        count = count - 10
+
+    return results
 
 
 ## Searches all SSM secrets by key name
@@ -161,5 +171,5 @@ if __name__ == "__main__":
         secrets_key_list = search_secrets(client, args["query"])
         secret_values = get_secrets(client, secrets_key_list)
 
-        for secret in secret_values["Parameters"]:
+        for secret in secret_values:
             print_secret(secret["Name"], secret["Value"])
