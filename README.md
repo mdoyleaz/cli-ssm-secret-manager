@@ -35,5 +35,5 @@ python ssm_secret_manager.py search --profile AWS_PROFILE_NAME SSM_SEARCH_QUERY
 Option allows you to create a new SSM parameter
 
 ```shell
-python ssm_secret_manager.py search --profile AWS_PROFILE_NAME --key SSM_PARAMETER_NAME --value SSM_PARAMETER_VALUE --type {String, SecureString}
+python ssm_secret_manager.py create --profile AWS_PROFILE_NAME --key SSM_PARAMETER_NAME --value SSM_PARAMETER_VALUE --type {String, SecureString}
 ```
